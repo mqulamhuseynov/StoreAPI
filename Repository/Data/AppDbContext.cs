@@ -1,4 +1,5 @@
 ﻿using Domain.Commons;
+using Domain.Configurations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,8 @@ namespace Repository.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BaseEntity>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
