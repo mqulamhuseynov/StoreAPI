@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Service.DTOs.ProductDTOs;
+using Service.Services.Abstracts;
 
 namespace ECommerceAPI.Controllers
 {
@@ -6,11 +8,19 @@ namespace ECommerceAPI.Controllers
     [Route("[controller]/[action]")]
     public class ProductController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult Get() 
+        private readonly IProductService _productService;
+        public ProductController(IProductService productService)
         {
-         string salam = "Hello, World!";
-            return Ok(salam);
+            _productService = productService;
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAll() => Ok(await _productService.GetAllProduct());
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateProductDTO request) 
+        {
+         await _productService.Create(request);
+            return Ok();
         }
     }
 }

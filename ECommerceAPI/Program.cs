@@ -1,6 +1,10 @@
 
 using Microsoft.EntityFrameworkCore;
 using Repository.Data;
+using Repository.Repositories.Abstracts;
+using Repository.Repositories.Concrates;
+using Service.Services.Abstracts;
+using Service.Services.Concrates;
 
 namespace ECommerceAPI
 {
@@ -21,6 +25,11 @@ namespace ECommerceAPI
             {
                 opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<IProductService, ProductService>();  
+
 
             var app = builder.Build();
 

@@ -36,13 +36,15 @@ namespace Service.Services.Concrates
         {
             var products = await _repository.GetAll();
 
-            return products.Select(p => new GetAllProductDTO
+            var mapProducts = products.Select(p => new GetAllProductDTO
             {
-                Id = p.Id.GetHashCode(), 
+                Id = p.Id, 
                 Name = p.Name,
                 Price = p.Price,
-                Description = p.Description
+                Description = p.Description,
+                CreatedAt = p.CreatedAt
             });
+            return mapProducts;
         }
     }
 }
