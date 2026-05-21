@@ -21,6 +21,8 @@ namespace Service.Services.Concrates
 
         public async Task Create(CreateProductDTO dto)
         {
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
             Product product = new Product
             {
              Name = dto.Name,
@@ -30,6 +32,11 @@ namespace Service.Services.Concrates
 
          await _repository.Create(product);
             
+        }
+
+        public async Task Delete(Guid id)
+        {
+             await _repository.Delete(id);
         }
 
         public async Task<IEnumerable<GetAllProductDTO>> GetAllProduct()
@@ -45,6 +52,21 @@ namespace Service.Services.Concrates
                 CreatedAt = p.CreatedAt
             });
             return mapProducts;
+        }
+
+        public async Task Update(Guid id, UpdateProductDTO dto)
+        {
+            if (id == Guid.Empty) throw new ArgumentNullException(nameof(id));
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+            var product = await _repository.GetByGuid(id);
+
+            if (product == null) throw new InvalidOperationException("Product not found.");
+
+            product.Name = dto.Name;
+            product.Price = dto.Price;
+            product.Description = dto.Description;
+
+            await _repository.Update(product);
         }
     }
 }

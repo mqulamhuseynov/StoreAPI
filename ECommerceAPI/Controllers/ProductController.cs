@@ -22,5 +22,19 @@ namespace ECommerceAPI.Controllers
          await _productService.Create(request);
             return Ok();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _productService.Delete(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateProductDTO request)
+        {
+            await _productService.Update(id, request);
+            return Ok();
+        }
     }
 }

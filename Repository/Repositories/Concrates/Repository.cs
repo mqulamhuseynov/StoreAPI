@@ -61,5 +61,7 @@ namespace Repository.Repositories.Concrates
             entity.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
         }
+
+        
     }
 }

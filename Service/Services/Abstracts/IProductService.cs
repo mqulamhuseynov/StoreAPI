@@ -11,5 +11,7 @@ namespace Service.Services.Abstracts
     {
         Task Create(CreateProductDTO dto);
         Task<IEnumerable<GetAllProductDTO>> GetAllProduct();
+        Task Update(Guid id, UpdateProductDTO dto);
+        Task Delete(Guid id);
     }
 }
