@@ -18,5 +18,12 @@ namespace ECommerceAPI.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterDTO request) => Ok(await _accountService.Register(request));
+
+        [HttpPost]
+        public async Task<IActionResult> CreateRole([FromBody] CreateRoleDTO request)
+        {
+            await _accountService.CreateRole(request);
+            return Ok("Ugurla yaradildi qagaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        }
     }
 }

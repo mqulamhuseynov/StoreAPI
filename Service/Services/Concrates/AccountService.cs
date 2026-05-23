@@ -22,6 +22,12 @@ namespace Service.Services.Concrates
             _roleManager = roleManager;
         }
 
+        public async Task CreateRole(CreateRoleDTO dto)
+        {
+            IdentityRole identityRole = new() { Name = dto.Name };
+            await _roleManager.CreateAsync(identityRole);
+        }
+
         public async Task<ApiResponse> Register(RegisterDTO dto)
         {
             AppUser appUser = new() 
@@ -39,8 +45,10 @@ namespace Service.Services.Concrates
             if (!identityResult.Succeeded) 
             {
                 apiResponse.Errors = identityResult.Errors.Select(e => e.Description).ToList();
-                apiResponse.Message = "User registration failed.";
+                apiResponse.Message = "o deile mans tezden ele";
             }
+
+            await _userManager.AddToRoleAsync(appUser, "Member");
 
             return apiResponse;
         }

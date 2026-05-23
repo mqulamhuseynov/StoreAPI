@@ -11,5 +11,6 @@ namespace Service.Services.Abstracts
     public interface IAccountService
     {
         Task<ApiResponse> Register(RegisterDTO dto);
+        Task CreateRole(CreateRoleDTO dto);
     }
 }
