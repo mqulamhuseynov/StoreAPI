@@ -18,11 +18,15 @@ namespace Domain.Configurations
                .IsRequired()
                .HasMaxLength(256);
 
-            builder.Property(p => p.Price).
-                HasPrecision(18, 2);
+            builder.Property(p => p.Price)
+                .HasPrecision(18, 2);
 
             builder.Property(p => p.Description)
                 .HasMaxLength(1000)
+                .IsRequired();
+
+            builder.Property(p => p.ImageUrl)
+                .HasMaxLength(512)
                 .IsRequired();
         }
     }
