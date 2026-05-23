@@ -12,5 +12,6 @@ namespace Service.Services.Abstracts
     {
         Task<ApiResponse> Register(RegisterDTO dto);
         Task CreateRole(CreateRoleDTO dto);
+        Task<string?> Login(LoginDTO dto);
     }
 }

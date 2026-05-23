@@ -1,12 +1,16 @@
 
 using Domain.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Repository.Data;
 using Repository.Repositories.Abstracts;
 using Repository.Repositories.Concrates;
 using Service.Services.Abstracts;
 using Service.Services.Concrates;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace ECommerceAPI
 {
@@ -43,6 +47,27 @@ namespace ECommerceAPI
                 opt.Lockout.AllowedForNewUsers = true;
             });
 
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
+            
+                builder.Services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(cfg =>
+                {
+                    cfg.RequireHttpsMetadata = false;
+                    cfg.SaveToken = true;
+                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                        ValidAudience = builder.Configuration["Jwt:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+                        ClockSkew = TimeSpan.Zero 
+                    };
+                });
+
             builder.Services.AddCors(opt =>
             {
                 opt.AddPolicy("AllowAll", policy =>
@@ -71,6 +96,8 @@ namespace ECommerceAPI
             app.UseCors("AllowAll");
             app.UseHttpsRedirection();
 
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
            
