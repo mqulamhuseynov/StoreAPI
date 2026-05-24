@@ -1,5 +1,6 @@
 
 using Domain.Entities;
+using Domain.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -78,10 +79,13 @@ namespace ECommerceAPI
                 });
             });
 
+            builder.Services.Configure<FileStorageSettings>(builder.Configuration.GetSection("FileStorage"));   
+
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<IProductService, ProductService>();  
             builder.Services.AddScoped<IAccountService, AccountService>();  
+            builder.Services.AddScoped<IFileService, FileService>();
 
 
             var app = builder.Build();

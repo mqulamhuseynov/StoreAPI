@@ -13,25 +13,35 @@ namespace Service.Services.Concrates
     public class ProductService : IProductService
     {
         private readonly IRepository<Product> _repository;
+        private readonly IFileService _fileService;
 
-        public ProductService(IRepository<Product> repository)
+        public ProductService(IRepository<Product> repository, IFileService fileService)
         {
             _repository = repository;
+            _fileService = fileService;
         }
 
         public async Task Create(CreateProductDTO dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
-
+            //dtodan gelen melumatlari zad zad elluy entitye
             Product product = new Product
             {
-             Name = dto.Name,
-             Price = dto.Price,
-             Description = dto.Description
+                Name = dto.Name,
+                Price = dto.Price,
+                Description = dto.Description
             };
+            //photo null deyilse file service ile upload edib url-ni entitye yaziriq
+            if (dto.Photo != null)
+            {
+                using (var stream = dto.Photo.OpenReadStream())
+                {
+                    product.ImageUrl = await _fileService.UploadFile(stream, dto.Photo.FileName, "products");
+                }
+            }
 
-         await _repository.Create(product);
-            
+            await _repository.Create(product);
+
         }
 
         public async Task Delete(Guid id)

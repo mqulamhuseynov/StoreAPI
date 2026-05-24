@@ -17,7 +17,7 @@ namespace ECommerceAPI.Controllers
         public async Task<IActionResult> GetAll() => Ok(await _productService.GetAllProduct());
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateProductDTO request) 
+        public async Task<IActionResult> Create([FromForm] CreateProductDTO request) 
         {
          await _productService.Create(request);
             return Ok();

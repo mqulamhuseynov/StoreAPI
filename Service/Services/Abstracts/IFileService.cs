@@ -9,7 +9,7 @@ namespace Service.Services.Abstracts
 {
     public interface IFileService
     {
-        Task<string> UploadFile(Stream filestream, string folder, string webRootPath, string fileName);
+        Task<string> UploadFile(Stream filestream, string fileName, string folderName);
         Task  DeleteFile(string fileUrl);
     }
 }

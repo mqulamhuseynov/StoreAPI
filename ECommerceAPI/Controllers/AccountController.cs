@@ -20,6 +20,7 @@ namespace ECommerceAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterDTO request) => Ok(await _accountService.Register(request));
 
+        [Authorize(Roles = "MohtesemAdmin")]
         [HttpPost]
         public async Task<IActionResult> CreateRole([FromBody] CreateRoleDTO request)
         {
@@ -30,11 +31,5 @@ namespace ECommerceAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginDTO request) => Ok(await _accountService.Login(request));
 
-        [Authorize]
-        [HttpGet("secret-data")]
-        public IActionResult GetSecretData()
-        {
-            return Ok("Halaldır mans, token saat kimi işləyir və sən bu gizli datanı görə bildin!");
-        }
     }
 }
