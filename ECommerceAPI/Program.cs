@@ -1,6 +1,7 @@
 
 using Domain.Entities;
 using Domain.Settings;
+using ECommerceAPI.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,8 +9,10 @@ using Microsoft.IdentityModel.Tokens;
 using Repository.Data;
 using Repository.Repositories.Abstracts;
 using Repository.Repositories.Concrates;
+using Repository.Repositories.Concretes;
 using Service.Services.Abstracts;
 using Service.Services.Concrates;
+using Service.Services.Concretes;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
@@ -27,6 +30,9 @@ namespace ECommerceAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+            builder.Services.AddProblemDetails();
 
             builder.Services.AddDbContext<AppDbContext>(opt => 
             {
@@ -100,6 +106,7 @@ namespace ECommerceAPI
             app.UseCors("AllowAll");
             app.UseHttpsRedirection();
 
+            app.UseExceptionHandler();
 
             app.UseAuthentication();
             app.UseAuthorization();
